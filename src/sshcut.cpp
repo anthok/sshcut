@@ -1,73 +1,46 @@
-#include <iostream>
-#include "utils.hpp"
+#include "sshcut.hpp"
 
-int main(int argc, char const *argv[]){
+int sshcut::removeSSH(std::string ssh_shorthand){
+  std::cout << "removing " << ssh_shorthand << std::endl;
 
-  //LESS THAN 2 ARGC
-  if (argc < 2){
-    utils::printUsage();
-  }
+  return 1;
+}
 
-  if(!utils::doesConfigExist()){
-    utils::createEmptyConfig();
-  }
+int sshcut::addSSH(std::string ssh_shorthand, std::string ssh_conn){
+  std::cout << "adding " << ssh_shorthand << " with " << ssh_conn << std::endl;
+  if (utils::doesNameExist(ssh_shorthand)) return 0;
 
-  //2 ARGC
-  //can be list,help,or connect
-  else if(argc == 2){
-    std::string opt = std::string(argv[1]);
+  return 1;
+}
 
-    if (opt == "help"){
-      utils::printUsage();
-      return 0;
-    }
-    else if (opt == "list"){
-      utils::showList();
-    }
-    else{
-      utils::connectSSH(opt);
-    }
-  }
+int sshcut::updateSSH(std::string ssh_shorthand, std::string ssh_conn){
+  std::cout << "updating " << ssh_shorthand << " with " << ssh_conn << std::endl;
 
-  //3 ARGC
-  //remove
-  else if(argc == 3){
-    std::string opt = std::string(argv[1]);
-    std::string shorthand = std::string(argv[2]);
+  return 1;
+}
 
-    if (opt == "remove"){
-      utils::removeSSH(shorthand);
-    }
-    else{
-      utils::printUsage();
-      return 0;
+int sshcut::connectSSH(std::string ssh_shorthand){
+  std::cout << "Attempting to connect to " << ssh_shorthand << std::endl;
+  return 1;
+}
+
+void sshcut::showList(void){
+  std::ifstream ifile(utils::getFullConfigPath());
+  if (ifile) {
+    std::string str;
+    while (std::getline(ifile, str)) {
+      // output the line
+      std::vector<std::string> str_vect;
+      strtk::parse(str,",",str_vect);
+      if (str_vect.size() != 2){
+        std::cout << "Parsing error on sshcut config, check your commas" << std::endl;
+        return;
+      }
+      std::cout << str_vect[0] << " -> " << str_vect[1] << std::endl;
     }
   }
-
-  //4 ARGC
-  //add
-  else if (argc == 4){
-    std::string opt = std::string(argv[1]);
-    std::string shorthand = std::string(argv[2]);
-    std::string ssh_conn = std::string(argv[3]);
-
-    if (opt == "add"){
-      utils::addSSH(shorthand, ssh_conn);
-    }
-    else if (opt == "update"){
-      utils::updateSSH(shorthand, ssh_conn);
-    }
-    else{
-      utils::printUsage();
-      return 0;
-    }
-  }
-
-  //more than 4 ARGC
   else{
-    utils::printUsage();
-    return 0;
-  }
-
-  return 0;
+    std::cout << "No sshcut config" << std::endl;
+    return;
+   }
 }

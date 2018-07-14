@@ -1,51 +1,5 @@
 #include "utils.hpp"
 
-int utils::removeSSH(std::string ssh_shorthand){
-  std::cout << "removing " << ssh_shorthand << std::endl;
-
-  return 1;
-}
-
-int utils::addSSH(std::string ssh_shorthand, std::string ssh_conn){
-  std::cout << "adding " << ssh_shorthand << " with " << ssh_conn << std::endl;
-  if (utils::doesNameExist(ssh_shorthand)) return 0;
-
-  return 1;
-}
-
-int utils::updateSSH(std::string ssh_shorthand, std::string ssh_conn){
-  std::cout << "updating " << ssh_shorthand << " with " << ssh_conn << std::endl;
-
-  return 1;
-}
-
-int utils::connectSSH(std::string ssh_shorthand){
-  std::cout << "Attempting to connect to " << ssh_shorthand << std::endl;
-  return 1;
-}
-
-void utils::showList(void){
-  std::ifstream ifile(utils::getFullConfigPath());
-  if (ifile) {
-    std::string str;
-    while (std::getline(ifile, str)) {
-      // output the line
-      std::vector<std::string> str_vect;
-      strtk::parse(str,",",str_vect);
-      if (str_vect.size() != 2){
-        std::cout << "Parsing error on sshcut config, check your commas" << std::endl;
-        return;
-      }
-      std::cout << str_vect[0] << " -> " << str_vect[1] << std::endl;
-    }
-  }
-  else{
-    std::cout << "No sshcut config" << std::endl;
-    return;
-   }
-}
-
-
 bool utils::doesNameExist(std::string potentialName){
   std::ifstream ifile(utils::getFullConfigPath());
   if (ifile) {
@@ -77,11 +31,10 @@ bool utils::doesNameExist(std::string potentialName){
 
 std::string utils::getFullConfigPath(){
   std::string homedir = getenv("HOME");
+  //TODO: add error handling here
   homedir += "/" + config_file_from_userhome;
   return homedir;
 }
-
-
 
 bool utils::doesConfigExist(){
   std::ifstream ifile(utils::getFullConfigPath());
