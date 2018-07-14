@@ -8,6 +8,10 @@ int main(int argc, char const *argv[]){
     utils::printUsage();
   }
 
+  if(!utils::doesConfigExist()){
+    utils::createEmptyConfig();
+  }
+
   //2 ARGC
   //can be list,help,or connect
   else if(argc == 2){

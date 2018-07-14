@@ -5,23 +5,29 @@ _sshcut()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="add update remove list help"
+    config_path="~/.config/sshcut/config.sshcut"
+
+    if [ ! -f config_path ]; then
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        return 0
+    fi
 
     case "$prev" in
     add | list | help )
         return 0
         ;;
     update)
-        local active=$(cut -d , ~/.config/sshcut/config.sshcut -f1)
+        local active=$(cut -d , $config_path -f1)
         COMPREPLY=( $(compgen -W "${active}" -- ${cur}) )
         return 0
         ;;
     remove)
-        local active=$(cut -d , ~/.config/sshcut/config.sshcut -f1)
+        local active=$(cut -d , $config_path -f1)
         COMPREPLY=( $(compgen -W "${active}" -- ${cur}) )
         return 0
         ;;
     *)
-        local active=$(cut -d , ~/.config/sshcut/config.sshcut -f1)
+        local active=$(cut -d , $config_path -f1)
         active+=$'\nadd'
         active+=$'\nlist'
         active+=$'\nhelp'

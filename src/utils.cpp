@@ -8,11 +8,14 @@ int utils::removeSSH(std::string ssh_shorthand){
 
 int utils::addSSH(std::string ssh_shorthand, std::string ssh_conn){
   std::cout << "adding " << ssh_shorthand << " with " << ssh_conn << std::endl;
+  if (utils::doesNameExist(ssh_shorthand)) return 0;
+
   return 1;
 }
 
 int utils::updateSSH(std::string ssh_shorthand, std::string ssh_conn){
   std::cout << "updating " << ssh_shorthand << " with " << ssh_conn << std::endl;
+
   return 1;
 }
 
@@ -22,7 +25,7 @@ int utils::connectSSH(std::string ssh_shorthand){
 }
 
 void utils::showList(void){
-  std::ifstream ifile(config_path);
+  std::ifstream ifile(utils::getFullConfigPath());
   if (ifile) {
     std::string str;
     while (std::getline(ifile, str)) {
@@ -37,11 +40,66 @@ void utils::showList(void){
     }
   }
   else{
-    std::cout << "No sshcut saved entries" << std::endl;
+    std::cout << "No sshcut config" << std::endl;
     return;
    }
 }
 
+
+bool utils::doesNameExist(std::string potentialName){
+  std::ifstream ifile(utils::getFullConfigPath());
+  if (ifile) {
+    std::string str;
+    while (std::getline(ifile, str)) {
+      // output the line
+      std::vector<std::string> str_vect;
+      strtk::parse(str,",",str_vect);
+      if (str_vect.size() != 2){
+        std::cout << "Parsing error on sshcut config, check your commas" << std::endl;
+        ifile.close();
+        return true;
+      }
+      if (potentialName == str_vect[0]){
+        std::cout << potentialName << " already exists" << std::endl;
+        ifile.close();
+        return true;
+      }
+    }
+    ifile.close();
+    return false;
+  }
+  else{
+    std::cout << "No sshcut config" << std::endl;
+    ifile.close();
+    return true;
+   }
+}
+
+std::string utils::getFullConfigPath(){
+  std::string homedir = getenv("HOME");
+  homedir += "/" + config_file_from_userhome;
+  return homedir;
+}
+
+
+
+bool utils::doesConfigExist(){
+  std::ifstream ifile(utils::getFullConfigPath());
+  if (ifile) {
+    ifile.close();
+    return true;
+  }
+  else{
+    ifile.close();
+    return false;
+  }
+}
+
+void utils::createEmptyConfig(){
+  std::ofstream ofile(utils::getFullConfigPath());
+  ofile.close();
+
+}
 
 void utils::printUsage(void){
   std::cout << "sshcut " << SSHCUT_VERSION << std::endl << std::endl;
