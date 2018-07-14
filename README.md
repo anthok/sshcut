@@ -1,0 +1,3 @@
+# sshcut
+
+SSH shortcut manager
