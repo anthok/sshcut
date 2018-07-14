@@ -5,9 +5,10 @@ _sshcut()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="add update remove list help"
-    config_path="~/.config/sshcut/config.sshcut"
+    user_home=$(eval echo "~$USER")
+    config_path="$user_home/.config/sshcut/config.sshcut"
 
-    if [ ! -f config_path ]; then
+    if [ ! -f $config_path ]; then
         COMPREPLY=( $(compgen -W "$opts" -- $cur) )
         return 0
     fi
