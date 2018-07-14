@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <string>
 #include <fstream>
+#include <stdlib.h>
 
 #define strtk_no_tr1_or_boost
 #include "strtk.hpp"
@@ -21,6 +22,8 @@ namespace utils{
   bool doesConfigExist();
   void printUsage(void);
   bool doesNameExist(std::string potentialName);
+  bool isValidInput(std::string shortcut, std::string ssh_cmd);
+
 
 }
 

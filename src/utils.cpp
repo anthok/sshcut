@@ -14,7 +14,6 @@ bool utils::doesNameExist(std::string potentialName){
         return true;
       }
       if (potentialName == str_vect[0]){
-        std::cout << potentialName << " already exists" << std::endl;
         ifile.close();
         return true;
       }
@@ -29,9 +28,22 @@ bool utils::doesNameExist(std::string potentialName){
    }
 }
 
+
+
+bool utils::isValidInput(std::string shortcut, std::string ssh_cmd){
+  return false;
+} 
+
 std::string utils::getFullConfigPath(){
-  std::string homedir = getenv("HOME");
-  //TODO: add error handling here
+  char* env_var;
+  env_var = getenv("HOME");
+
+  if(env_var == NULL){
+    std::cout << "HOME environment variable not set, exiting" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  std::string homedir(env_var);
   homedir += "/" + config_file_from_userhome;
   return homedir;
 }
