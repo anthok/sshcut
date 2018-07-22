@@ -31,7 +31,20 @@ bool utils::doesNameExist(std::string potentialName){
 
 
 bool utils::isValidInput(std::string shortcut, std::string ssh_cmd){
-  return false;
+
+  std::size_t found = shortcut.find(',');
+  if (found != std::string::npos){
+    std::cout << "Invalid shortcut name" << std::endl;
+    return false;
+  }
+
+  found = ssh_cmd.find(',');
+  if (found != std::string::npos){
+    std::cout << "Invalid ssh command" << std::endl;
+    return false;
+  }
+
+  return true;
 } 
 
 std::string utils::getFullConfigPath(){
