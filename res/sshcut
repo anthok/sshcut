@@ -1,33 +1,46 @@
-_adb()  
+_sshcut()  
 {
     local cur prev opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="shell push pull reboot reboot-bootloader forward logcat devices kill-server root remount"
+    opts="add update remove list help"
+    user_home=$(eval echo "~$USER")
+    config_path="$user_home/.config/sshcut/config.sshcut"
+
+    if [ ! -f $config_path ]; then
+        COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+        return 0
+    fi
 
     case "$prev" in
-    shell | pull | reboot-bootloader | logcat | devices | kill-server | root | remount)
-        COMPREPLY=()
+    add | list | help )
         return 0
         ;;
-    reboot)
-        COMPREPLY=( $(compgen -W "bootloader recovery" -- $cur) )
+    update)
+        local active=$(cut -d , $config_path -f1)
+        COMPREPLY=( $(compgen -W "${active}" -- ${cur}) )
         return 0
         ;;
-    push)
-        COMPREPLY=( $(compgen -o default -o plusdirs -f -- $cur) )
+    remove)
+        local active=$(cut -d , $config_path -f1)
+        COMPREPLY=( $(compgen -W "${active}" -- ${cur}) )
         return 0
         ;;
     *)
-        local prev2="${COMP_WORDS[COMP_CWORD-2]}"
-        if [ "$prev2" == "push" ] || [ "$prev2" == "reboot" ];then
-            return 0
-        fi
+        local active=$(cut -d , $config_path -f1)
+        active+=$'\nadd'
+        active+=$'\nlist'
+        active+=$'\nhelp'
+        active+=$'\nupdate'
+        active+=$'\nremove'
+
+        COMPREPLY=( $(compgen -W "${active}" -- ${cur}) )
+        return 0
         ;;
     esac	
 
     COMPREPLY=( $(compgen -W "$opts" -- $cur) )
     return 0
 }
-complete -F _adb adb
+complete -F _sshcut sshcut

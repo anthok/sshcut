@@ -1,28 +1,7 @@
 #include "utils.hpp"
 
-int utils::removeSSH(std::string ssh_shorthand){
-  std::cout << "removing " << ssh_shorthand << std::endl;
-
-  return 1;
-}
-
-int utils::addSSH(std::string ssh_shorthand, std::string ssh_conn){
-  std::cout << "adding " << ssh_shorthand << " with " << ssh_conn << std::endl;
-  return 1;
-}
-
-int utils::updateSSH(std::string ssh_shorthand, std::string ssh_conn){
-  std::cout << "updating " << ssh_shorthand << " with " << ssh_conn << std::endl;
-  return 1;
-}
-
-int utils::connectSSH(std::string ssh_shorthand){
-  std::cout << "Attempting to connect to " << ssh_shorthand << std::endl;
-  return 1;
-}
-
-void utils::showList(void){
-  std::ifstream ifile(config_path);
+bool utils::doesNameExist(std::string potentialName){
+  std::ifstream ifile(utils::getFullConfigPath());
   if (ifile) {
     std::string str;
     while (std::getline(ifile, str)) {
@@ -31,17 +10,74 @@ void utils::showList(void){
       strtk::parse(str,",",str_vect);
       if (str_vect.size() != 2){
         std::cout << "Parsing error on sshcut config, check your commas" << std::endl;
-        return;
+        ifile.close();
+        return true;
       }
-      std::cout << str_vect[0] << " -> " << str_vect[1] << std::endl;
+      if (potentialName == str_vect[0]){
+        ifile.close();
+        return true;
+      }
     }
+    ifile.close();
+    return false;
   }
   else{
-    std::cout << "No sshcut saved entries" << std::endl;
-    return;
+    std::cout << "No sshcut config" << std::endl;
+    ifile.close();
+    return true;
    }
 }
 
+
+
+bool utils::isValidInput(std::string shortcut, std::string ssh_cmd){
+
+  std::size_t found = shortcut.find(',');
+  if (found != std::string::npos){
+    std::cout << "Invalid shortcut name" << std::endl;
+    return false;
+  }
+
+  found = ssh_cmd.find(',');
+  if (found != std::string::npos){
+    std::cout << "Invalid ssh command" << std::endl;
+    return false;
+  }
+
+  return true;
+} 
+
+std::string utils::getFullConfigPath(){
+  char* env_var;
+  env_var = getenv("HOME");
+
+  if(env_var == NULL){
+    std::cout << "HOME environment variable not set, exiting" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  std::string homedir(env_var);
+  homedir += "/" + config_file_from_userhome;
+  return homedir;
+}
+
+bool utils::doesConfigExist(){
+  std::ifstream ifile(utils::getFullConfigPath());
+  if (ifile) {
+    ifile.close();
+    return true;
+  }
+  else{
+    ifile.close();
+    return false;
+  }
+}
+
+void utils::createEmptyConfig(){
+  std::ofstream ofile(utils::getFullConfigPath());
+  ofile.close();
+
+}
 
 void utils::printUsage(void){
   std::cout << "sshcut " << SSHCUT_VERSION << std::endl << std::endl;
