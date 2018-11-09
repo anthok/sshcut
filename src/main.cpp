@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]){
     return 0;
   }
 
-  if(!utils::doesConfigExist()){
+  if(!utils::doesConfigFileExist()){
     utils::createEmptyConfig();
   }
 

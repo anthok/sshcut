@@ -61,7 +61,21 @@ std::string utils::getFullConfigPath(){
   return homedir;
 }
 
-bool utils::doesConfigExist(){
+std::string utils::getFullConfigFolder(){
+  char* env_var;
+  env_var = getenv("HOME");
+
+  if(env_var == NULL){
+    std::cout << "HOME environment variable not set, exiting" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  std::string homedir(env_var);
+  homedir += "/" + config_folder_from_userhome;
+  return homedir;
+}
+
+bool utils::doesConfigFileExist(){
   std::ifstream ifile(utils::getFullConfigPath());
   if (ifile) {
     ifile.close();
@@ -73,7 +87,26 @@ bool utils::doesConfigExist(){
   }
 }
 
+bool utils::doesConfigFolderExist(){
+  std::string folder_path = utils::getFullConfigFolder();
+  if (std::filesystem::exists(folder_path)) {
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
 void utils::createEmptyConfig(){
+  int status = 0;
+  if (!utils::doesConfigFolderExist()){
+    status = mkdir(utils::getFullConfigFolder().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    if (status !=0 ){
+      std::cout << "Error creating config folder, exiting" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+
   std::ofstream ofile(utils::getFullConfigPath());
   ofile.close();
 

@@ -1,8 +1,8 @@
 # compiler
-CC=g++
-CFLAGS=-Wall -std=c++11
+CC=g++-8
+CFLAGS=-Wall -std=c++17
 INCLUDE=-I $(PWD)/inc
-LIBS=
+LIBS=-lstdc++fs
 
 # DEBUG_TARGETS=sshcut-debug
 
@@ -20,7 +20,7 @@ LIBS=
 
 sshcut:
 	mkdir -p bin/
-	$(CC) $(CFLAGS) $(INCLUDE) -g -o bin/$@ src/*.cpp
+	$(CC) $(CFLAGS) $(INCLUDE) -g -o bin/$@ src/*.cpp $(LIBS)
 	# strip -s bin/release/$@
 
 clean:
