@@ -8,10 +8,10 @@ bool utils::doesNameExist(std::string potentialName){
       // output the line
       std::vector<std::string> str_vect;
       strtk::parse(str,",",str_vect);
-      if (str_vect.size() != 2){
-        std::cout << "Parsing error on sshcut config, check your commas" << std::endl;
+      if (str_vect.size() != 2 && str_vect.size() != 3){
+        std::cout << "Parsing error doesNameExist(), on sshcut config, check your commas" << std::endl;
         ifile.close();
-        return true;
+        return false;
       }
       if (potentialName == str_vect[0]){
         ifile.close();
@@ -28,9 +28,7 @@ bool utils::doesNameExist(std::string potentialName){
    }
 }
 
-
-
-bool utils::isValidInput(std::string shortcut, std::string ssh_cmd){
+bool utils::isValidInput(std::string shortcut, std::string ssh_cmd, std::string trigger_action){
 
   std::size_t found = shortcut.find(',');
   if (found != std::string::npos){
@@ -120,8 +118,8 @@ void utils::printUsage(void){
   std::cout << "Commands: " << std::endl;
 
   std::cout << "  sshcut devbox1 " << std::endl;
-  std::cout << "  sshcut add devbox2 root@192.168.1.2" << std::endl;
-  std::cout << "  sshcut update devbox2 root@192.168.1.3" << std::endl;
+  std::cout << "  sshcut add devbox2 root@192.168.1.2 <optional trigger>" << std::endl;
+  std::cout << "  sshcut update devbox2 root@192.168.1.3 <optional trigger>" << std::endl;
   std::cout << "  sshcut remove devbox2 " << std::endl;
   std::cout << "  sshcut list " << std::endl;
   std::cout << "  sshcut help " << std::endl;

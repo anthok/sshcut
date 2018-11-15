@@ -49,16 +49,22 @@ int main(int argc, char const *argv[]){
 
   //4 ARGC
   //add
-  else if (argc == 4){
+  else if (argc == 4 || argc == 5){
     std::string opt = std::string(argv[1]);
     std::string shorthand = std::string(argv[2]);
     std::string ssh_conn = std::string(argv[3]);
+    std::string trigger_action = "";
+
+    if (argc == 5){
+      trigger_action = std::string(argv[4]);
+    }
+
 
     if (opt == "add"){
-      sshcut::addSSH(shorthand, ssh_conn);
+      sshcut::addSSH(shorthand, ssh_conn, trigger_action);
     }
     else if (opt == "update"){
-      sshcut::updateSSH(shorthand, ssh_conn);
+      sshcut::updateSSH(shorthand, ssh_conn, trigger_action);
     }
     else{
       utils::printUsage();
@@ -66,7 +72,7 @@ int main(int argc, char const *argv[]){
     }
   }
 
-  //more than 4 ARGC
+  //more than 6 ARGC
   else{
     utils::printUsage();
     return 0;

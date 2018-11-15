@@ -18,7 +18,7 @@ namespace utils{
 
   const std::string config_file_from_userhome = "/.config/sshcut/config.sshcut";
   const std::string config_folder_from_userhome = "/.config/sshcut/";
-  const std::string SSHCUT_VERSION = "0.1";
+  const std::string SSHCUT_VERSION = "0.2";
 
 
   std::string getFullConfigPath();
@@ -28,7 +28,7 @@ namespace utils{
   bool doesConfigFolderExist();
   void printUsage(void);
   bool doesNameExist(std::string potentialName);
-  bool isValidInput(std::string shortcut, std::string ssh_cmd);
+  bool isValidInput(std::string shortcut, std::string ssh_cmd, std::string trigger_action);
 
 
 }
