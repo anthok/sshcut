@@ -35,7 +35,7 @@ sudo mv $RES_FILE /etc/bash_completion.d/sshcut
 
 ### Developers
 
-This project has been written assuming C++17 and G++8. #CuttingEdge
+Just your run of the mill C++, its not great.
 
 ## Versioning
 ##### 0.3 (PLANNED)
@@ -56,5 +56,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* The Lab
+* The Bearded Bros
 
