@@ -26,7 +26,7 @@ Commands:
 
 ### Installing
 #### Easy Install
-`sudo dpkg -i sshcut_0.1-0.deb` 
+`sudo dpkg -i sshcut_0.2-0.deb` 
 
 #### Manual Install
 Download one of the prebuilt binaries for your pleasure and a copy of the bashcomplete script in res/
