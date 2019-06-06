@@ -25,9 +25,11 @@ Commands:
 
 
 ### Installing
+#### Easy Install
+`sudo dpkg -i sshcut_0.1-0.deb` 
 
+#### Manual Install
 Download one of the prebuilt binaries for your pleasure and a copy of the bashcomplete script in res/
-
 ```
 sudo mv $BIN_FILE /usr/bin/sshcut
 sudo mv $RES_FILE /etc/bash_completion.d/sshcut
